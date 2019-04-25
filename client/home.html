@@ -1,0 +1,48 @@
+<template name="home">
+	<h1>Hello azaz</h1>
+	{{>navbar}}
+</template>
+<template name="navbar">
+   <nav class="navbar navbar-expand-sm z-depth-1"  >
+
+    
+         <a href="index.html" class="navbar-brand my-auto" style="font-size:18px;font-weight:bold;color:#EF6C00;"><span style="font-size:18px;font-weight:bold;color:#6A1B9A">Blog</span><img class="d-inline" src="siteicon.png" alt="logo" height="50" width="50">Buzz</a>
+      
+    
+      <ul class="navbar-nav justify-content-end w-75">
+        <li class="nav-item m-2">
+          <a class="nav-link" href="manageuser" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Write Blog</a>
+        </li> 
+        <li class="nav-item m-2">
+          <a class="nav-link" href="#" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Manage Blog</a>
+        </li>
+        <li class="nav-item m-2">
+          <a class="nav-link" href="#" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Manage </a>
+        </li>
+        <li class="nav-item my-auto ml-3">
+            <input type="text" name="search" placeholder="search blog" class="my-auto d-inline" style="border:1px solid blue;width:70%;border-radius:8px;background-color:rgba(250,250,250,.3);font-family:serif;padding-left:6px;background-image:url('search.png');">
+
+            <button class="button" style="background-color:rgba(250,250,250,.3);border:1px solid blue;border-radius:8px;"><img src="search.png" height="32" width="32" class="d-inline"></button>
+        </li>
+         
+      </ul>
+      <ul class="navbar-nav justify-content-end w-25">
+        
+        <li class="nav-item m-2">
+          <a class="nav-link" id="signup" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px">
+           
+        <i class="fas fa-user-alt"  style="font-size:30px;color:green;display: block;"></i>
+            Sign Up
+          </a>
+        </li>
+        <li class="nav-item m-2">
+          <a class="nav-link" id="signin" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px">
+           
+        <i class="fas fa-user-alt" style="font-size:30px;color:green;display: block;"></i>
+            Sign In
+          </a>
+        </li>
+      </ul>
+      
+ 	</nav>
+</template>
