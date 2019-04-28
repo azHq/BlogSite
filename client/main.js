@@ -3,18 +3,35 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Session } from 'meteor/session';
 import './main.html';
 import '../lib/routes.js';
+import './writeblog.html';
+import './main.html';
+import './manageblog.html';
+
+Blogs = new Meteor.Collection('blogs') ;
+
+Meteor.startup(() => {
+
+
+   navigator.geolocation.getCurrentPosition(function(position) {
+      
+      
+        Session.set("latitude",position.coords.latitude);
+        Session.set("longitude",position.coords.longitude);
+    });
+});
 
 Template.navbar.events({
   'click #signup':function (event) {
     
-    	var top=document.getElementById("form").style.top;
+    	var top=document.getElementById("signupform").style.top;
 
       if(top=="-900px"){
 
-        document.getElementById("form").style.top="120px";
+        document.getElementById("signupform").style.top="120px";
+        document.getElementById("signinform").style.top="-900px";
       }
       else{
-          document.getElementById("form").style.top="-900px";
+          document.getElementById("signupform").style.top="-900px";
       }
       
     	
@@ -29,6 +46,7 @@ Template.navbar.events({
       if(top=="-900px"){
 
         document.getElementById("signinform").style.top="120px";
+        document.getElementById("signupform").style.top="-900px";
       }
       else{
           document.getElementById("signinform").style.top="-900px";
@@ -40,13 +58,15 @@ Template.navbar.events({
 Template.navbar.events({
   'click #writeblog':function (event) {
     
-      var top=document.getElementById("signinform").style.top;
+      
 
-      if(Meteor.userId()==null){
+      if(Meteor.userId()==null&&Session.get("authState")==1){
 
+        var top=document.getElementById("signinform").style.top;
         if(top=="-900px"){
 
           document.getElementById("signinform").style.top="120px";
+          document.getElementById("signupform").style.top="-900px";
         }
         else{
             document.getElementById("signinform").style.top="-900px";
@@ -55,25 +75,44 @@ Template.navbar.events({
       }
       else{
 
-        console.log("hello azaz");
-         this.redirect('/writeblog');
+        var top=document.getElementById("signupform").style.top;
+        if(top=="-900px"){
+          
+          document.getElementById("signupform").style.top="120px";
+          document.getElementById("signinform").style.top="-900px";
+          
+        }
+        else{
+
+            document.getElementById("signupform").style.top="-900px";
+        }
+        
       }
       
       
+      
   },
+});
+
+Template.navbar.helpers({
+  equals: function(a) {
+
+      return a == Session.get('state');
+    }
 });
 
 Template.signup.events({
 	'submit form':function(event,template){
 
 		event.preventDefault();
-     document.getElementById("form").style.top="-900px";
+    document.getElementById("signupform").style.top="-900px";
 		var name=event.target.name.value;
 		var email=event.target.email.value;
 		var password=event.target.password.value;
 		var phone=event.target.phonenumber.value;
+    Session.set("authState",1);
 		Accounts.createUser({
-			name:name,
+			username:name,
 			email:email,
 			password:password,
 			phone:phone
@@ -116,31 +155,56 @@ Template.signin.events({
 
 });
 
-/*Template.body.helpers({
-    registration() {
-      return Session.get('showRegister');
-    }
- });
+Template.blog.events({
+  'submit #blogForm':function(e){
+    e.preventDefault() ;
+    var title = $('#blogTitle').val() ;
+    var body = $('#blogBody').val() ;
+    if(title.length && body.length){
 
-Template.signin.events({
-    'click button'() {
-      alert('Do login stuff!');
-    },
-    'click .js-show-register'(event) {
-      event.preventDefault();
-      //Session.set('showRegister', true);
-    }
-  });
+    
+      navigator.geolocation.getCurrentPosition(function(position) {
 
-  Template.signup.events({
-    'click button'(event) {
-      console.log("hhelo");
-    	
-    },
-    'click .js-show-login'(event) {
-       event.preventDefault();  
+       
+        Meteor.call('submitPost',title,body,position.coords.latitude,position.coords.longitude) ;
+        Router.go('/manageblog');
+          
+    });
      
-      //Session.set('showRegister', false);
-    }
-  });*/
+
+    }else{
+      alert("title or body couldn't be empty") ;
+    }    
+  }
+});
+
+Template.bloglist.events({
+  'click #delete'(event, instance) {
+
+    Blogs.remove(this._id);
+  }
+});
+Template.bloglist.blogs= function(){
+
+      return Blogs.find({'id':Meteor.userId()}).fetch();
+}
+
+Template.Allbloglist.blogs= function(){
+
+        var latitude=Session.get("latitude");
+        var longitude=Session.get("longitude");
+        
+        console.log(latitude);
+
+      return Blogs.find({geometry:
+        { 
+          $near :
+          {
+            $geometry:{ type:"Point", coordinates:[ latitude,longitude]},
+            $minDistance: 1000,
+            $maxDistance: 5000
+          }
+        }
+       }).fetch();
+}
 

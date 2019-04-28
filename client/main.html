@@ -8,6 +8,7 @@
 
     
     {{>navbar}}
+    {{>Allbloglist}}
     {{>signup}}
     {{>signin}}
 
@@ -15,64 +16,102 @@
 </template>
 
 <template name="navbar">
-   <nav class="navbar navbar-expand-sm z-depth-1"  >
+   <nav class="navbar navbar-expand z-depth-1">
 
-    
-         <a href="index.html" class="navbar-brand my-auto" style="font-size:18px;font-weight:bold;color:#EF6C00;"><span style="font-size:18px;font-weight:bold;color:#6A1B9A">Blog</span><img class="d-inline" src="siteicon.png" alt="logo" height="50" width="50">Buzz</a>
+     
+        <a href="index.html" class="navbar-brand my-auto w-25" style="font-size:18px;font-weight:bold;color:#EF6C00;"><span style="font-size:18px;font-weight:bold;color:#6A1B9A;">Blog</span><img class="d-inline" src="siteicon.png" alt="logo" height="50" width="50" >Buzz</a>
+        
+        
       
-    
-      <ul class="navbar-nav justify-content-end w-75">
-        <li class="nav-item m-2">
-          <a class="nav-link" href="" id="writeblog" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Write Blog</a>
-        </li> 
-        <li class="nav-item m-2">
-          <a class="nav-link" href="#" id="manageblog" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Manage Blog</a>
-        </li>
-        <li class="nav-item m-2">
-          <a class="nav-link" href="#" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Manage </a>
-        </li>
-        <li class="nav-item my-auto ml-3">
-            <input type="text" name="search" placeholder="search blog" class="my-auto d-inline" style="border:1px solid blue;width:70%;border-radius:8px;background-color:rgba(250,250,250,.3);font-family:serif;padding-left:6px;background-image:url('search.png');">
+       <div class="w-100 hidden-md-down">
+          <ul class="navbar-nav justify-content-end w-75 hidden-md-down " >
+            <li class="nav-item m-2">
+               {{#if equals 0}}
+              <a class="nav-link" href="/home" style="color:red;font-weight:500px;font-size:18px;font-family:sans-serif;">Home</a>
+               {{else}}
+               <a class="nav-link" href="/home" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Home</a>
+                {{/if}}
+            </li>
+            <li class="nav-item m-2">
+              {{#if equals 1}}
+              <a class="nav-link" href="writeblog" id="writeblog" style="color:red;font-weight:500px;font-size:18px;font-family:sans-serif;">Write Blog</a>
+              {{else}}
+              <a class="nav-link" href="writeblog" id="writeblog" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Write Blog</a>
+              {{/if}}
+            </li> 
+            <li class="nav-item m-2">
+              {{#if currentUser}}
+                {{#if equals 2}}
+                <a class="nav-link" href="manageblog" id="manageblog" style="color:red;font-weight:500px;font-size:18px;font-family:sans-serif;">Manage Blog</a>
+                {{else}}
+                <a class="nav-link" href="manageblog" id="manageblog" style="color:green;font-weight:500px;font-size:18px;font-family:sans-serif;">Manage Blog</a>
+                {{/if}}
+              {{/if}}
+            </li> 
+            <li class="nav-item my-auto ml-3">
+                <input type="text" name="search" placeholder="search blog" class="my-auto d-inline" style="border:1px solid blue;width:70%;border-radius:8px;background-color:rgba(250,250,250,.3);font-family:serif;padding-left:6px;background-image:url('search.png');">
 
-            <button class="button" style="background-color:rgba(250,250,250,.3);border:1px solid blue;border-radius:8px;"><img src="search.png" height="32" width="32" class="d-inline"></button>
-        </li>
-         
-      </ul>
-      <ul class="navbar-nav justify-content-end w-25">
+                <button class="button" style="background-color:rgba(250,250,250,.3);border:1px solid blue;border-radius:8px;"><img src="search.png" height="32" width="32" class="d-inline"></button>
+            </li>
+             
+          </ul>
+          <ul class="navbar-nav justify-content-end w-25 hidden-md-down ">
 
-        {{#if currentUser }}
-        <li class="nav-item m-2">
-          <a class="nav-link" id="signout" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px">
+            {{#if currentUser }}
+            <li class="nav-item m-2">
+              <a class="nav-link" id="signout" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px">
+               
+            <i class="fas fa-user-alt"  style="font-size:30px;color:green;display: block;"></i>
+                Sign Out
+              </a>
+            </li>
+            {{else}}
+            <li class="nav-item m-2">
+              <a class="nav-link" id="signup" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px;">
+               
+            <i class="fas fa-user-alt"  style="font-size:30px;color:green;display: block;"></i>
+                Sign Up
+              </a>
+            </li>
+            <li class="nav-item m-2">
+              <a class="nav-link" id="signin" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px">
+               
+            <i class="fas fa-user-alt" style="font-size:30px;color:green;display: block;"></i>
+                Sign In
+              </a>
+            </li>
+            {{/if}}
+
+          </ul>
            
-        <i class="fas fa-user-alt"  style="font-size:30px;color:green;display: block;"></i>
-            Sign Out
-          </a>
-        </li>
-        {{else}}
-        <li class="nav-item m-2">
-          <a class="nav-link" id="signup" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px;">
-           
-        <i class="fas fa-user-alt"  style="font-size:30px;color:green;display: block;"></i>
-            Sign Up
-          </a>
-        </li>
-        <li class="nav-item m-2">
-          <a class="nav-link" id="signin" href="#" style="color:black;font-weight:500px;font-size:15px;font-family:sans-serif;padding-right:6px">
-           
-        <i class="fas fa-user-alt" style="font-size:30px;color:green;display: block;"></i>
-            Sign In
-          </a>
-        </li>
-        {{/if}}
-      </ul>
-      
+        </div> 
+        <div class="w-75 hidden-lg-up">
+          <ul class=" row d-flex justify-content-end my-auto">
+            <li class="nav-item my-auto ml-3">
+                <input type="text" name="search" placeholder="search blog" class="my-auto d-inline" style="border:1px solid blue;width:60%;border-radius:8px;background-color:rgba(250,250,250,.3);font-family:serif;padding-left:6px;background-image:url('search.png');">
+
+                <button class="button" style="background-color:rgba(250,250,250,.3);border:1px solid blue;border-radius:8px;"><img src="search.png" height="32" width="32" class="d-inline"></button>
+            </li>
+            <li class="nav-item  m-3">
+              <div style="width:40px;height:35px; background-color:#FFA000;padding-top:5px;padding-left:4.3px;border-radius:6px">
+                <div  style="margin:auto;width:30px;height:26px;">
+                  <span style="height:2px;background-color:#FFF9C4;margin:4.5px 0px;width:25px;display:block;border-radius:6px"></span>
+                  <span style="height:1.8px;background-color:#FFF9C4;margin:4.5px 0px;width:25px;display:block;border-radius:2px"></span>
+                  <span style="height:2px;background-color:#FFF9C4;margin:4.5px 0px;width:25px;display:block;border-radius:2px"></span>
+                </div>
+                
+              </div>
+                
+            </li>
+          </ul>
+        </div>
+        
     </nav>
 </template>
-
 <template name="signup">
 
-  <section class="w-50 m-auto" id="form" style="position:fixed;top:-900px;transition:400ms;left:30%">
-    <form class="m-auto w-50 card" style="border:1px solid green;background-color:#EEEEEE">
+  <section class="w-50 m-auto" id="signupform" style="position:fixed;top:-900px;transition:400ms;left:30%">
+    <form class="m-auto card" style="border:1px solid green;min-width:300px;max-width: 340px;background-color:#EEEEEE">
       <div class="w-100 mt-3" >
         <label class="w-75 ml-5 d-block" style="color:green;font-weight:bold;font-family:sans-serif;">User Name*</label>
         <input type="text" name="name" placeholder="Name" class="w-75 ml-5 mt-1 d-block" style="border:1px solid blue;height:35px;border-radius:8px;background-color:white;padding-left:6px"  required="text">
@@ -100,7 +139,7 @@
 <template name="signin">
 
   <section class="w-50 m-auto" id="signinform" style="position:fixed;top:-900px;transition:400ms;left:30%" >
-    <form class="m-auto w-50 card" style="border:1px solid green;background-color:#EEEEEE">
+    <form class="m-auto card" style="border:1px solid green;min-width:300px;max-width: 340px; background-color:#EEEEEE">
       
       <div class="w-100 mt-3" >
         <label class="w-50 ml-5 d-block" style="color:green;font-weight:bold;font-family:sans-serif;">Email*</label>
@@ -108,7 +147,7 @@
       </div>
       <div class="w-100 mt-3" >
         <label class="w-50 ml-5 d-block" style="color:green;font-weight:bold;font-family:sans-serif;">Password*</label>
-        <input type="text" name="password" placeholder="Password" class="w-75 ml-5 mt-1 d-block" style="border:1px solid blue;height:35px;border-radius:8px;background-color:white;padding-left:6px" required="text">
+        <input type="password" name="password" placeholder="Password" class="w-75 ml-5 mt-1 d-block" style="border:1px solid blue;height:35px;border-radius:8px;background-color:white;padding-left:6px" required="text">
       </div>
       <div class="mt-3 mb-3" style="margin-left:35%">
         <button type="submit" class="btn btn-info" style="width:100px" >Sign In</button>
@@ -116,6 +155,47 @@
     </form>
   </section>
     
+</template>
+
+<template name="Allbloglist">
+    
+    <body>
+
+      {{#each blogs}}
+        <div class="container card w-75 my-5" style="border-radius:10px">
+          <div class="row ml-3">
+            <h3 class="w-100 mt-3" style="text-align:center;">{{title}}</h3>
+            <div class="w-100 m-3">
+              <h4 class="w-50">Name: {{username}}</h4>
+              <h5 class="w-50">Date: {{date}}</h5>
+            </div>
+            <div class="w-100 ml-3 mr-3">
+              <p>{{body}}</p>
+            </div>
+            
+            <div class="m-3 w-100 container">
+              <div class="w-100">
+                <hr>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <img width="40" height="40" src="like.png">
+                </div>
+                <div class="col-4">
+                 <img width="40" height="40" src="comment.png">
+                </div>
+                <div class="col-4">
+                 <img width="40" height="40" src="share.png">
+                </div>
+              </div>
+              
+            </div> 
+          </div>
+        </div>
+    {{/each}}
+    
+  </body>
+
 </template>
 
 

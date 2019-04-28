@@ -1,0 +1,33 @@
+    <template name="blog1">
+      <head>
+        <title>myblog</title>
+      </head>
+      
+      <body>
+      
+        {{> listBlog}}
+      
+      </body>
+    </template>
+      <template name ="listBlog">
+      
+        {{#each blogs}}
+            <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                    <h1 class="display-4">{{title}}</h1>
+                    <p class="lead">{{body}}</p>
+                    </div>
+            </div>
+        {{/each}}
+      
+      </template>
+      
+      
+
+
+
+
+
+
+
+

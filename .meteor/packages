@@ -30,3 +30,6 @@ okornl:meteor-font-awesome
 session
 iron:router
 accounts-base
+momentjs:moment
+mdg:geolocation
+jaymc:google-reverse-geocode
